@@ -1,3 +1,11 @@
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Flask is working!"
+
 @app.route("/test")
 def test():
-    return "API Working"
+    return "Test route working!"
