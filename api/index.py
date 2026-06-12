@@ -41,3 +41,29 @@ def predict_price():
     return jsonify({
         "predicted_price": float(prediction[0])
     })
+@app.route("/predict_cut", methods=["POST"])
+def predict_cut():
+
+    data = request.json
+
+    features = [[
+        float(data["carat"]),
+        le_color.transform([data["color"]])[0],
+        le_clarity.transform([data["clarity"]])[0],
+        float(data["depth"]),
+        float(data["table"]),
+        float(data["price"]),
+        float(data["x"]),
+        float(data["y"]),
+        float(data["z"])
+    ]]
+
+    features = cut_scaler.transform(features)
+
+    prediction = cut_model.predict(features)
+
+    cut_name = le_cut.inverse_transform(prediction)[0]
+
+    return jsonify({
+        "predicted_cut": str(cut_name)
+    })
