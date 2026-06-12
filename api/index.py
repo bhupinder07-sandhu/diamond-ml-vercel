@@ -1,21 +1,26 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import joblib
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder="../templates")
 
+# Load Models
 price_model = joblib.load("models/price_model.pkl")
 cut_model = joblib.load("models/cut_model.pkl")
 
+# Load Scalers
 price_scaler = joblib.load("models/price_scaler.pkl")
 cut_scaler = joblib.load("models/cut_scaler.pkl")
 
+# Load Encoders
 le_cut = joblib.load("models/le_cut.pkl")
 le_color = joblib.load("models/le_color.pkl")
 le_clarity = joblib.load("models/le_clarity.pkl")
 
+
 @app.route("/")
 def home():
-    return "All files loaded successfully!"
+    return render_template("index.html")
+
 
 @app.route("/predict_price", methods=["POST"])
 def predict_price():
@@ -39,8 +44,10 @@ def predict_price():
     prediction = price_model.predict(features)
 
     return jsonify({
-        "predicted_price": float(prediction[0])
+        "predicted_price": round(float(prediction[0]), 2)
     })
+
+
 @app.route("/predict_cut", methods=["POST"])
 def predict_cut():
 

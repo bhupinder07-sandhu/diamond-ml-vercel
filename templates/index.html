@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💎 Diamond Prediction System</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+min-height:100vh;
+padding:30px;
+color:white;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+}
+
+h1{
+text-align:center;
+font-size:3rem;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+color:#cbd5e1;
+margin-bottom:40px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:25px;
+}
+
+.card{
+background:rgba(255,255,255,.08);
+padding:25px;
+border-radius:20px;
+backdrop-filter:blur(12px);
+}
+
+.card h2{
+margin-bottom:20px;
+}
+
+input,select{
+width:100%;
+padding:12px;
+margin-bottom:12px;
+border:none;
+border-radius:10px;
+font-size:15px;
+}
+
+button{
+width:100%;
+padding:14px;
+background:#38bdf8;
+border:none;
+border-radius:10px;
+font-size:17px;
+font-weight:bold;
+color:white;
+cursor:pointer;
+}
+
+button:hover{
+opacity:.9;
+}
+
+.result{
+margin-top:15px;
+padding:15px;
+border-radius:10px;
+background:rgba(255,255,255,.1);
+font-size:18px;
+text-align:center;
+}
+
+@media(max-width:900px){
+.cards{
+grid-template-columns:1fr;
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>💎 Diamond Prediction System</h1>
+<p class="subtitle">Machine Learning Powered Diamond Analytics</p>
+
+<div class="cards">
+
+<div class="card">
+
+<h2>Predict Price</h2>
+
+<select id="cut">
+<option>Ideal</option>
+<option>Premium</option>
+<option>Very Good</option>
+<option>Good</option>
+<option>Fair</option>
+</select>
+
+<select id="color">
+<option>D</option>
+<option>E</option>
+<option>F</option>
+<option>G</option>
+<option>H</option>
+<option>I</option>
+<option>J</option>
+</select>
+
+<select id="clarity">
+<option>IF</option>
+<option>VVS1</option>
+<option>VVS2</option>
+<option>VS1</option>
+<option>VS2</option>
+<option>SI1</option>
+<option>SI2</option>
+<option>I1</option>
+</select>
+
+<input type="number" id="carat" placeholder="Carat">
+<input type="number" id="depth" placeholder="Depth">
+<input type="number" id="table" placeholder="Table">
+<input type="number" id="x" placeholder="Length (X)">
+<input type="number" id="y" placeholder="Width (Y)">
+<input type="number" id="z" placeholder="Depth (Z)">
+
+<button onclick="predictPrice()">Predict Price</button>
+
+<div class="result" id="priceResult">
+Prediction will appear here
+</div>
+
+</div>
+
+<div class="card">
+
+<h2>Predict Cut</h2>
+
+<input type="number" id="price" placeholder="Price">
+
+<button onclick="predictCut()">Predict Cut</button>
+
+<div class="result" id="cutResult">
+Prediction will appear here
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+async function predictPrice(){
+
+const data = {
+cut:document.getElementById("cut").value,
+color:document.getElementById("color").value,
+clarity:document.getElementById("clarity").value,
+carat:parseFloat(document.getElementById("carat").value),
+depth:parseFloat(document.getElementById("depth").value),
+table:parseFloat(document.getElementById("table").value),
+x:parseFloat(document.getElementById("x").value),
+y:parseFloat(document.getElementById("y").value),
+z:parseFloat(document.getElementById("z").value)
+};
+
+const response = await fetch("/predict_price",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(data)
+});
+
+const result = await response.json();
+
+document.getElementById("priceResult").innerHTML =
+"💰 Predicted Price: ₹ " + result.predicted_price.toFixed(2);
+
+}
+
+async function predictCut(){
+
+const data = {
+carat:parseFloat(document.getElementById("carat").value),
+color:document.getElementById("color").value,
+clarity:document.getElementById("clarity").value,
+depth:parseFloat(document.getElementById("depth").value),
+table:parseFloat(document.getElementById("table").value),
+price:parseFloat(document.getElementById("price").value),
+x:parseFloat(document.getElementById("x").value),
+y:parseFloat(document.getElementById("y").value),
+z:parseFloat(document.getElementById("z").value)
+};
+
+const response = await fetch("/predict_cut",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(data)
+});
+
+const result = await response.json();
+
+document.getElementById("cutResult").innerHTML =
+"💎 Predicted Cut: " + result.predicted_cut;
+
+}
+
+</script>
+
+</body>
+</html>
