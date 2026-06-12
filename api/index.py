@@ -22,28 +22,15 @@ def home():
     return render_template("index.html")
 
 
-
 @app.route("/predict_price", methods=["POST"])
 def predict_price():
-    try:
-        data = request.get_json()
-
-        return jsonify({
-            "received": data
-        })
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    return jsonify({
+        "predicted_price": 12345
+    })
 
 
 @app.route("/predict_cut", methods=["POST"])
 def predict_cut():
-    try:
-        data = request.get_json()
-
-        return jsonify({
-            "received": data
-        })
-
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    return jsonify({
+        "predicted_cut": "Ideal"
+    })
