@@ -1,11 +1,10 @@
 from flask import Flask
+import joblib
 
 app = Flask(__name__)
 
+price_model = joblib.load("models/price_model.pkl")
+
 @app.route("/")
 def home():
-    return "Flask is working!"
-
-@app.route("/test")
-def test():
-    return "Test route working!"
+    return "Price model loaded successfully!"
