@@ -173,67 +173,93 @@ Prediction will appear here
 
 </div>
 
-<script>
+<<script>
 
 async function predictPrice(){
 
-const data = {
-cut:document.getElementById("cut").value,
-color:document.getElementById("color").value,
-clarity:document.getElementById("clarity").value,
-carat:parseFloat(document.getElementById("carat").value),
-depth:parseFloat(document.getElementById("depth").value),
-table:parseFloat(document.getElementById("table").value),
-x:parseFloat(document.getElementById("x").value),
-y:parseFloat(document.getElementById("y").value),
-z:parseFloat(document.getElementById("z").value)
-};
+    const data = {
+        cut: document.getElementById("cut").value,
+        color: document.getElementById("color").value,
+        clarity: document.getElementById("clarity").value,
+        carat: parseFloat(document.getElementById("carat").value),
+        depth: parseFloat(document.getElementById("depth").value),
+        table: parseFloat(document.getElementById("table").value),
+        x: parseFloat(document.getElementById("x").value),
+        y: parseFloat(document.getElementById("y").value),
+        z: parseFloat(document.getElementById("z").value)
+    };
 
-const response = await fetch("/predict_price",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify(data)
-});
+    try{
 
-const result = await response.json();
+        const response = await fetch("/predict_price",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(data)
+        });
 
-document.getElementById("priceResult").innerHTML =
-"💰 Predicted Price: ₹ " + result.predicted_price.toFixed(2);
+        const result = await response.json();
 
+        if(result.error){
+            document.getElementById("priceResult").innerHTML =
+            "❌ " + result.error;
+        }
+        else{
+            document.getElementById("priceResult").innerHTML =
+            "💰 Predicted Price: ₹ " + Number(result.predicted_price).toFixed(2);
+        }
+
+    }
+    catch(err){
+        document.getElementById("priceResult").innerHTML =
+        "❌ " + err;
+    }
 }
+
 
 async function predictCut(){
 
-const data = {
-carat:parseFloat(document.getElementById("carat").value),
-color:document.getElementById("color").value,
-clarity:document.getElementById("clarity").value,
-depth:parseFloat(document.getElementById("depth").value),
-table:parseFloat(document.getElementById("table").value),
-price:parseFloat(document.getElementById("price").value),
-x:parseFloat(document.getElementById("x").value),
-y:parseFloat(document.getElementById("y").value),
-z:parseFloat(document.getElementById("z").value)
-};
+    const data = {
+        carat: parseFloat(document.getElementById("carat").value),
+        color: document.getElementById("color").value,
+        clarity: document.getElementById("clarity").value,
+        depth: parseFloat(document.getElementById("depth").value),
+        table: parseFloat(document.getElementById("table").value),
+        price: parseFloat(document.getElementById("price").value),
+        x: parseFloat(document.getElementById("x").value),
+        y: parseFloat(document.getElementById("y").value),
+        z: parseFloat(document.getElementById("z").value)
+    };
 
-const response = await fetch("/predict_cut",{
-method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
-body:JSON.stringify(data)
-});
+    try{
 
-const result = await response.json();
+        const response = await fetch("/predict_cut",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(data)
+        });
 
-document.getElementById("cutResult").innerHTML =
-"💎 Predicted Cut: " + result.predicted_cut;
+        const result = await response.json();
 
+        if(result.error){
+            document.getElementById("cutResult").innerHTML =
+            "❌ " + result.error;
+        }
+        else{
+            document.getElementById("cutResult").innerHTML =
+            "💎 Predicted Cut: " + result.predicted_cut;
+        }
+
+    }
+    catch(err){
+        document.getElementById("cutResult").innerHTML =
+        "❌ " + err;
+    }
 }
 
 </script>
-
 </body>
 </html>
