@@ -18,11 +18,36 @@ def home():
     return render_template("index.html")
 
 
+
 @app.route("/predict_price", methods=["POST"])
 def predict_price():
-    return jsonify({
-        "predicted_price": 12345
-    })
+    try:
+        data = request.get_json()
+
+        features = [[
+            le_cut.transform([data["cut"]])[0],
+            float(data["carat"]),
+            le_color.transform([data["color"]])[0],
+            le_clarity.transform([data["clarity"]])[0],
+            float(data["depth"]),
+            float(data["table"]),
+            float(data["x"]),
+            float(data["y"]),
+            float(data["z"])
+        ]]
+
+        features = price_scaler.transform(features)
+
+        prediction = price_model.predict(features)
+
+        return jsonify({
+            "predicted_price": round(float(prediction[0]), 2)
+        })
+
+    except Exception as e:
+        return jsonify({
+            "error": str(e)
+        })
 
 
 @app.route("/predict_cut", methods=["POST"])
