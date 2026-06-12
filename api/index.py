@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, jsonify
 import joblib
 
 app = Flask(__name__)
@@ -16,3 +16,28 @@ le_clarity = joblib.load("models/le_clarity.pkl")
 @app.route("/")
 def home():
     return "All files loaded successfully!"
+
+@app.route("/predict_price", methods=["POST"])
+def predict_price():
+
+    data = request.json
+
+    features = [[
+        le_cut.transform([data["cut"]])[0],
+        float(data["carat"]),
+        le_color.transform([data["color"]])[0],
+        le_clarity.transform([data["clarity"]])[0],
+        float(data["depth"]),
+        float(data["table"]),
+        float(data["x"]),
+        float(data["y"]),
+        float(data["z"])
+    ]]
+
+    features = price_scaler.transform(features)
+
+    prediction = price_model.predict(features)
+
+    return jsonify({
+        "predicted_price": float(prediction[0])
+    })
