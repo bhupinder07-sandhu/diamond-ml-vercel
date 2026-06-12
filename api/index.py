@@ -22,55 +22,28 @@ def home():
     return render_template("index.html")
 
 
+
 @app.route("/predict_price", methods=["POST"])
 def predict_price():
+    try:
+        data = request.get_json()
 
-    data = request.json
+        return jsonify({
+            "received": data
+        })
 
-    features = [[
-        le_cut.transform([data["cut"]])[0],
-        float(data["carat"]),
-        le_color.transform([data["color"]])[0],
-        le_clarity.transform([data["clarity"]])[0],
-        float(data["depth"]),
-        float(data["table"]),
-        float(data["x"]),
-        float(data["y"]),
-        float(data["z"])
-    ]]
-
-    features = price_scaler.transform(features)
-
-    prediction = price_model.predict(features)
-
-    return jsonify({
-        "predicted_price": round(float(prediction[0]), 2)
-    })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/predict_cut", methods=["POST"])
 def predict_cut():
+    try:
+        data = request.get_json()
 
-    data = request.json
+        return jsonify({
+            "received": data
+        })
 
-    features = [[
-        float(data["carat"]),
-        le_color.transform([data["color"]])[0],
-        le_clarity.transform([data["clarity"]])[0],
-        float(data["depth"]),
-        float(data["table"]),
-        float(data["price"]),
-        float(data["x"]),
-        float(data["y"]),
-        float(data["z"])
-    ]]
-
-    features = cut_scaler.transform(features)
-
-    prediction = cut_model.predict(features)
-
-    cut_name = le_cut.inverse_transform(prediction)[0]
-
-    return jsonify({
-        "predicted_cut": str(cut_name)
-    })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
