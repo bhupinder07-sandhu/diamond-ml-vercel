@@ -49,9 +49,34 @@ def predict_price():
             "error": str(e)
         })
 
-
 @app.route("/predict_cut", methods=["POST"])
 def predict_cut():
-    return jsonify({
-        "predicted_cut": "Ideal"
-    })
+    try:
+        data = request.get_json()
+
+        features = [[
+            float(data["carat"]),
+            le_color.transform([data["color"]])[0],
+            le_clarity.transform([data["clarity"]])[0],
+            float(data["depth"]),
+            float(data["table"]),
+            float(data["price"]),
+            float(data["x"]),
+            float(data["y"]),
+            float(data["z"])
+        ]]
+
+        features = cut_scaler.transform(features)
+
+        prediction = cut_model.predict(features)
+
+        cut_name = le_cut.inverse_transform([int(prediction[0])])[0]
+
+        return jsonify({
+            "predicted_cut": cut_name
+        })
+
+    except Exception as e:
+        return jsonify({
+            "error": str(e)
+        })
