@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,26 +16,25 @@ font-family:'Segoe UI',sans-serif;
 body{
 background:linear-gradient(135deg,#0f172a,#1e293b);
 min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
 padding:30px;
 color:white;
 }
 
 .container{
-width:100%;
-max-width:800px;
+max-width:1000px;
+margin:auto;
 }
 
 .card{
 background:rgba(255,255,255,.08);
 backdrop-filter:blur(15px);
-padding:35px;
+padding:30px;
 border-radius:25px;
 }
 
 .back{
+display:inline-block;
+margin-bottom:20px;
 color:white;
 text-decoration:none;
 font-weight:bold;
@@ -44,7 +42,7 @@ font-weight:bold;
 
 h1{
 text-align:center;
-margin:20px 0 10px;
+margin-bottom:10px;
 }
 
 .subtitle{
@@ -53,14 +51,31 @@ color:#cbd5e1;
 margin-bottom:25px;
 }
 
+.help-box{
+background:rgba(255,255,255,.08);
+padding:15px;
+border-radius:15px;
+margin-bottom:25px;
+color:#cbd5e1;
+}
+
 .grid{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:12px;
+gap:15px;
+}
+
+.field{
+display:flex;
+flex-direction:column;
+}
+
+label{
+margin-bottom:6px;
+font-weight:600;
 }
 
 input,select{
-width:100%;
 padding:14px;
 border:none;
 border-radius:12px;
@@ -69,8 +84,8 @@ font-size:15px;
 
 button{
 width:100%;
-margin-top:20px;
 padding:15px;
+margin-top:25px;
 border:none;
 border-radius:12px;
 background:#38bdf8;
@@ -80,16 +95,21 @@ font-weight:bold;
 cursor:pointer;
 }
 
+button:hover{
+opacity:.9;
+}
+
 .result{
 margin-top:20px;
-padding:15px;
-border-radius:12px;
+padding:18px;
+border-radius:15px;
 background:rgba(255,255,255,.1);
 text-align:center;
 font-size:20px;
+font-weight:bold;
 }
 
-@media(max-width:700px){
+@media(max-width:768px){
 .grid{
 grid-template-columns:1fr;
 }
@@ -100,17 +120,32 @@ grid-template-columns:1fr;
 <body>
 
 <div class="container">
+
 <div class="card">
 
 <a href="/" class="back">⬅ Back Home</a>
 
 <h1>💎 Diamond Cut Prediction</h1>
+
 <p class="subtitle">
-Predict the cut category of a diamond
+Predict the cut category of a diamond using Machine Learning
 </p>
+
+<div class="help-box">
+💡 Example Values:
+Carat = 1.25,
+Price = ₹75000,
+Depth = 61.5,
+Table = 57,
+X = 6.9,
+Y = 6.8,
+Z = 4.2
+</div>
 
 <div class="grid">
 
+<div class="field">
+<label>Diamond Color</label>
 <select id="color">
 <option>D</option>
 <option>E</option>
@@ -120,7 +155,10 @@ Predict the cut category of a diamond
 <option>I</option>
 <option>J</option>
 </select>
+</div>
 
+<div class="field">
+<label>Diamond Clarity</label>
 <select id="clarity">
 <option>IF</option>
 <option>VVS1</option>
@@ -131,17 +169,42 @@ Predict the cut category of a diamond
 <option>SI2</option>
 <option>I1</option>
 </select>
+</div>
 
-<input type="number" id="carat" placeholder="Carat">
-<input type="number" id="depth" placeholder="Depth">
+<div class="field">
+<label>Carat Weight</label>
+<input type="number" step="0.01" id="carat" placeholder="Example: 1.25">
+</div>
 
-<input type="number" id="table" placeholder="Table">
-<input type="number" id="price" placeholder="Price">
+<div class="field">
+<label>Diamond Price (₹)</label>
+<input type="number" step="0.01" id="price" placeholder="Example: 75000">
+</div>
 
-<input type="number" id="x" placeholder="Length (X)">
-<input type="number" id="y" placeholder="Width (Y)">
+<div class="field">
+<label>Depth %</label>
+<input type="number" step="0.01" id="depth" placeholder="Example: 61.5">
+</div>
 
-<input type="number" id="z" placeholder="Depth (Z)">
+<div class="field">
+<label>Table %</label>
+<input type="number" step="0.01" id="table" placeholder="Example: 57">
+</div>
+
+<div class="field">
+<label>Length X (mm)</label>
+<input type="number" step="0.01" id="x" placeholder="Example: 6.9">
+</div>
+
+<div class="field">
+<label>Width Y (mm)</label>
+<input type="number" step="0.01" id="y" placeholder="Example: 6.8">
+</div>
+
+<div class="field">
+<label>Depth Z (mm)</label>
+<input type="number" step="0.01" id="z" placeholder="Example: 4.2">
+</div>
 
 </div>
 
@@ -173,18 +236,20 @@ z:parseFloat(document.getElementById("z").value)
 
 const response=await fetch("/predict_cut",{
 method:"POST",
-headers:{"Content-Type":"application/json"},
+headers:{
+"Content-Type":"application/json"
+},
 body:JSON.stringify(data)
 });
 
 const result=await response.json();
 
 document.getElementById("result").innerHTML=
-result.error ? "❌ "+result.error :
+result.error ?
+"❌ "+result.error :
 "💎 Predicted Cut: "+result.predicted_cut;
 }
 </script>
 
 </body>
 </html>
-```
