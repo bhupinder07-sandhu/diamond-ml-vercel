@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>💎 Diamond Prediction System</title>
+<title>Diamond Prediction System</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
@@ -11,87 +13,108 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+font-family:'Poppins',sans-serif;
 }
 
 body{
-background:linear-gradient(135deg,#0f172a,#1e293b);
+background:linear-gradient(135deg,#050505,#121212,#1d1d1d);
 min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:30px;
 color:white;
 }
 
 .container{
-max-width:1000px;
-width:100%;
+max-width:1200px;
+margin:auto;
+padding:40px 20px;
 }
 
-h1{
+.hero{
 text-align:center;
-font-size:3rem;
-margin-bottom:10px;
+padding:60px 0;
 }
 
-.subtitle{
-text-align:center;
-color:#cbd5e1;
-margin-bottom:50px;
-font-size:18px;
+.hero h1{
+font-size:4rem;
+color:#d4af37;
+margin-bottom:15px;
+}
+
+.hero p{
+font-size:1.2rem;
+color:#cfcfcf;
+max-width:700px;
+margin:auto;
+line-height:1.8;
+}
+
+.gold-line{
+width:150px;
+height:4px;
+background:#d4af37;
+margin:25px auto;
+border-radius:50px;
 }
 
 .cards{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:30px;
+margin-top:50px;
 }
 
 .card{
-background:rgba(255,255,255,.08);
-backdrop-filter:blur(15px);
-padding:35px;
+background:#161616;
+padding:40px;
 border-radius:25px;
 text-align:center;
+border:1px solid rgba(212,175,55,.2);
+box-shadow:0 0 25px rgba(212,175,55,.1);
 transition:.3s;
 }
 
 .card:hover{
-transform:translateY(-8px);
+transform:translateY(-10px);
 }
 
 .icon{
 font-size:70px;
-margin-bottom:15px;
+margin-bottom:20px;
 }
 
 .card h2{
+color:#d4af37;
 margin-bottom:15px;
 }
 
 .card p{
-color:#cbd5e1;
-line-height:1.6;
+color:#cfcfcf;
+line-height:1.8;
 margin-bottom:25px;
 }
 
 .btn{
 display:inline-block;
-padding:14px 30px;
-background:#38bdf8;
-color:white;
-text-decoration:none;
-border-radius:12px;
+padding:14px 35px;
+background:linear-gradient(135deg,#d4af37,#f7d774);
+color:black;
 font-weight:bold;
-font-size:16px;
+border-radius:12px;
+text-decoration:none;
 }
 
-.btn:hover{
-opacity:.9;
+footer{
+margin-top:80px;
+padding:30px;
+text-align:center;
+color:#999;
+border-top:1px solid rgba(212,175,55,.15);
 }
 
 @media(max-width:768px){
+.hero h1{
+font-size:2.5rem;
+}
+
 .cards{
 grid-template-columns:1fr;
 }
@@ -99,51 +122,65 @@ grid-template-columns:1fr;
 
 </style>
 </head>
-
 <body>
 
 <div class="container">
 
+<div class="hero">
+
 <h1>💎 Diamond Prediction System</h1>
 
-<p class="subtitle">
-Machine Learning Powered Diamond Analytics
+<div class="gold-line"></div>
+
+<p>
+Luxury Diamond Valuation & Quality Analysis Powered By Artificial Intelligence.
+Predict diamond prices and identify cut quality with advanced machine learning models.
 </p>
+
+</div>
 
 <div class="cards">
 
 <div class="card">
+
 <div class="icon">💰</div>
 
-<h2>Price Prediction</h2>
+<h2>Diamond Price Prediction</h2>
 
 <p>
-Predict the market value of a diamond using
-Machine Learning based on carat, cut,
-clarity, color and dimensions.
+Estimate the market value of a diamond using carat weight, color, clarity, dimensions and other characteristics.
 </p>
 
 <a href="/price" class="btn">
 Predict Price
 </a>
+
 </div>
 
 <div class="card">
+
 <div class="icon">💎</div>
 
-<h2>Cut Prediction</h2>
+<h2>Diamond Cut Prediction</h2>
 
 <p>
-Predict the quality cut category of a diamond
-using its physical properties and price.
+Predict the quality cut category of a diamond using physical characteristics and pricing information.
 </p>
 
 <a href="/cut" class="btn">
 Predict Cut
 </a>
+
 </div>
 
 </div>
+
+<footer>
+
+<p>💎 Diamond Prediction System</p>
+<p>Developed by Bhupinder Sandhu</p>
+
+</footer>
 
 </div>
 
