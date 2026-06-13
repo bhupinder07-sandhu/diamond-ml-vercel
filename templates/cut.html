@@ -1,0 +1,190 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diamond Cut Prediction</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:linear-gradient(135deg,#0f172a,#1e293b);
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:30px;
+color:white;
+}
+
+.container{
+width:100%;
+max-width:800px;
+}
+
+.card{
+background:rgba(255,255,255,.08);
+backdrop-filter:blur(15px);
+padding:35px;
+border-radius:25px;
+}
+
+.back{
+color:white;
+text-decoration:none;
+font-weight:bold;
+}
+
+h1{
+text-align:center;
+margin:20px 0 10px;
+}
+
+.subtitle{
+text-align:center;
+color:#cbd5e1;
+margin-bottom:25px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+input,select{
+width:100%;
+padding:14px;
+border:none;
+border-radius:12px;
+font-size:15px;
+}
+
+button{
+width:100%;
+margin-top:20px;
+padding:15px;
+border:none;
+border-radius:12px;
+background:#38bdf8;
+color:white;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.result{
+margin-top:20px;
+padding:15px;
+border-radius:12px;
+background:rgba(255,255,255,.1);
+text-align:center;
+font-size:20px;
+}
+
+@media(max-width:700px){
+.grid{
+grid-template-columns:1fr;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<div class="card">
+
+<a href="/" class="back">⬅ Back Home</a>
+
+<h1>💎 Diamond Cut Prediction</h1>
+<p class="subtitle">
+Predict the cut category of a diamond
+</p>
+
+<div class="grid">
+
+<select id="color">
+<option>D</option>
+<option>E</option>
+<option>F</option>
+<option>G</option>
+<option>H</option>
+<option>I</option>
+<option>J</option>
+</select>
+
+<select id="clarity">
+<option>IF</option>
+<option>VVS1</option>
+<option>VVS2</option>
+<option>VS1</option>
+<option>VS2</option>
+<option>SI1</option>
+<option>SI2</option>
+<option>I1</option>
+</select>
+
+<input type="number" id="carat" placeholder="Carat">
+<input type="number" id="depth" placeholder="Depth">
+
+<input type="number" id="table" placeholder="Table">
+<input type="number" id="price" placeholder="Price">
+
+<input type="number" id="x" placeholder="Length (X)">
+<input type="number" id="y" placeholder="Width (Y)">
+
+<input type="number" id="z" placeholder="Depth (Z)">
+
+</div>
+
+<button onclick="predictCut()">
+💎 Predict Cut
+</button>
+
+<div class="result" id="result">
+Prediction will appear here
+</div>
+
+</div>
+</div>
+
+<script>
+async function predictCut(){
+
+const data={
+carat:parseFloat(document.getElementById("carat").value),
+color:document.getElementById("color").value,
+clarity:document.getElementById("clarity").value,
+depth:parseFloat(document.getElementById("depth").value),
+table:parseFloat(document.getElementById("table").value),
+price:parseFloat(document.getElementById("price").value),
+x:parseFloat(document.getElementById("x").value),
+y:parseFloat(document.getElementById("y").value),
+z:parseFloat(document.getElementById("z").value)
+};
+
+const response=await fetch("/predict_cut",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(data)
+});
+
+const result=await response.json();
+
+document.getElementById("result").innerHTML=
+result.error ? "❌ "+result.error :
+"💎 Predicted Cut: "+result.predicted_cut;
+}
+</script>
+
+</body>
+</html>
+```

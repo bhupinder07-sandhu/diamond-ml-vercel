@@ -15,7 +15,15 @@ le_clarity = joblib.load("models/le_clarity.pkl")
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("home.html")
+
+@app.route("/price")
+def price():
+    return render_template("price.html")
+
+@app.route("/cut")
+def cut():
+    return render_template("cut.html")
 
 
 
